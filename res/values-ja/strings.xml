@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">電話番号プラグイン for twicca</string>
+    <string name="extract">電話番号を抽出する</string>
+    <string name="choice">番号を選択してください</string>
+    <string name="empty_text">ツイートが空です</string>
+
+</resources>
