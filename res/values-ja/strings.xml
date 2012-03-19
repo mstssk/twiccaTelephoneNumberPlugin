@@ -4,5 +4,11 @@
     <string name="extract">電話番号を抽出する</string>
     <string name="choice">番号を選択してください</string>
     <string name="empty_text">ツイートが空です</string>
+    <string-array name="share_menu">
+        <item >発信</item>
+        <item >他のアプリで発信\n(例:Skype)</item>
+        <item >共有</item>
+        <item >電話帳へ</item>
+    </string-array>
 
 </resources>

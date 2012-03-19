@@ -4,5 +4,11 @@
     <string name="extract">Extract telephone numbers</string>
     <string name="choice">Choise a number to call.</string>
     <string name="empty_text">The tweet is empty!</string>
+    <string-array name="share_menu">
+        <item >Call</item>
+        <item >Call with other app\n(e.g. Skype)</item>
+        <item >Share</item>
+        <item >To Contacts</item>
+    </string-array>
 
 </resources>

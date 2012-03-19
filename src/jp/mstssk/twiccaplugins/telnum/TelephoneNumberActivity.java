@@ -2,10 +2,13 @@ package jp.mstssk.twiccaplugins.telnum;
 
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -18,6 +21,9 @@ import android.widget.Toast;
  */
 public class TelephoneNumberActivity extends ListActivity {
 
+	/**
+	 * 初期化
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,26 +51,17 @@ public class TelephoneNumberActivity extends ListActivity {
 	}
 
 	/**
-	 * {@inheritDoc} 長押し選択リスナの設定のためのオーバライド
-	 */
-	@Override
-	public void onContentChanged() {
-		super.onContentChanged();
-		getListView().setOnItemLongClickListener(onLongClickListener);
-	}
-
-	/**
 	 * 適切な呼び出しかどうか判定
 	 * 
 	 * @param intent
 	 * @return
 	 */
-	private boolean isValidIntent(Intent intent) {
+	private boolean isValidIntent(final Intent intent) {
 		if (intent == null) {
 			return false;
 		}
-		String text = intent.getStringExtra(Intent.EXTRA_TEXT);
-		if (text == null || text.length() == 0) {
+		final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+		if (TextUtils.isEmpty(text)) {
 			return false;
 		}
 		return true;
@@ -80,13 +77,30 @@ public class TelephoneNumberActivity extends ListActivity {
 	 */
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		TelephoneNumber number = getItem(position);
-		throwDialIntent(number);
+		final TelephoneNumber number = getItem(position);
+		callPriviledged(number);
 		finish();
 	}
 
 	/**
-	 * 長押し選択。抽出した電話番号をテキストとして共有する。
+	 * 発信
+	 * 
+	 * @param number
+	 */
+	private void callPriviledged(final TelephoneNumber number) {
+		try {
+			final Intent intent = IntentUtil
+					.createPriviledgedCallIntent(number);
+			startActivity(intent);
+		} catch (ActivityNotFoundException e) {
+			// ACTION_CALL_PRIVILEGED に非対応の場合は普通のACTION_DIAL
+			Intent intent = IntentUtil.createDialIntent(number);
+			startActivity(intent);
+		}
+	}
+
+	/**
+	 * 長押し選択。抽出した電話番号をどうするかサブメニュー表示
 	 * 
 	 * @param l
 	 * @param v
@@ -96,33 +110,59 @@ public class TelephoneNumberActivity extends ListActivity {
 	 */
 	protected boolean onListItemLongClick(ListView l, View v, int position,
 			long id) {
-		TelephoneNumber number = getItem(position);
-		throwTextShareIntent(number);
-		finish();
+		final TelephoneNumber number = getItem(position);
+		showNumberShareMenu(number);
 		return true;
 	}
 
 	/**
-	 * ダイアル画面を表示
+	 * 共有メニューを表示
 	 * 
 	 * @param number
 	 */
-	protected void throwDialIntent(TelephoneNumber number) {
-		Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"
-				+ number.getFormatedNumber()));
-		startActivity(intent);
+	private void showNumberShareMenu(final TelephoneNumber number) {
+		new AlertDialog.Builder(this).setItems(R.array.share_menu,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						switch (which) {
+							case 0:
+								// 普通に発信
+								Intent dialIntent = IntentUtil
+										.createDialIntent(number);
+								startActivity(dialIntent);
+								break;
+							case 1:
+								// CALL_PRIVILEGED
+								callPriviledged(number);
+								break;
+							case 2:
+								// 共有
+								Intent shareIntent = IntentUtil
+										.createTextShareIntent(number);
+								startActivity(shareIntent);
+								break;
+							case 3:
+								// 電話帳へ
+								Intent contactInsertIntnet = IntentUtil
+										.createContactInsertIntnet(number);
+								startActivity(contactInsertIntnet);
+								break;
+							default:
+								break;
+						}
+						finish();
+					}
+				}).show();
 	}
 
 	/**
-	 * 電話番号をテキストとして共有
-	 * 
-	 * @param number
+	 * {@inheritDoc} 長押し選択リスナの設定のためのオーバライド
 	 */
-	protected void throwTextShareIntent(TelephoneNumber number) {
-		Intent intent = new Intent(Intent.ACTION_SEND);
-		intent.setType("text/plain");
-		intent.putExtra(Intent.EXTRA_TEXT, number.getFormatedNumber());
-		startActivity(intent);
+	@Override
+	public void onContentChanged() {
+		super.onContentChanged();
+		getListView().setOnItemLongClickListener(onLongClickListener);
 	}
 
 	/**

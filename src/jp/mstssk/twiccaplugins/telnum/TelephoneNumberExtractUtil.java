@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  */
 public class TelephoneNumberExtractUtil {
 
-	/** 電話番号っぽい文字列の正規表現 */
+	/** 電話番号っぽい文字列の正規表現（最小9桁） */
 	private static final Pattern PATTERN_TEL_NUM = Pattern
 			.compile("[0-9０-９](((?<![-ー─ 　])[-ー─ 　])|[0-9０-９]){8,}");
 
