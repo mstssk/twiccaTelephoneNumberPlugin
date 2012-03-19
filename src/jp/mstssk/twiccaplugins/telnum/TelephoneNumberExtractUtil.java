@@ -14,7 +14,7 @@ public class TelephoneNumberExtractUtil {
 
 	/** 電話番号っぽい文字列の正規表現 */
 	private static final Pattern PATTERN_TEL_NUM = Pattern
-			.compile("[0-9０-９](((?<![-ー─ 　])[-ー─ 　])|[0-9０-９]){2,}");
+			.compile("[0-9０-９](((?<![-ー─ 　])[-ー─ 　])|[0-9０-９]){8,}");
 
 	/** 単純な数字の正規表現 */
 	private static final Pattern PATTERN_NUM_CHAR = Pattern.compile("[0-9０-９]");

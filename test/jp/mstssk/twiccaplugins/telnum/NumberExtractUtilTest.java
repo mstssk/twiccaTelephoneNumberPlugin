@@ -18,7 +18,7 @@ public class NumberExtractUtilTest {
 	public void test() throws Exception {
 
 		List<TelephoneNumber> list = TelephoneNumberExtractUtil
-				.extract("ほげほあふぁｋｌ090-1234-5678ｊｆｋ０９０９ー８７５３５ｌさｊ1,23,456,789ふぁ");
+				.extract("ほげほあふぁｋｌ090-1234-5678ｊｆｋ０９０ー９８７５-３５ｌさｊ1,23,456,789ふぁ");
 
 		boolean extracted = false;
 		assertNotNull(list);
