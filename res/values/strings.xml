@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Telephone Number plugin for twicca</string>
     <string name="extract">Extract telephone numbers</string>
-    <string name="choice">Choise a number to call.</string>
+    <string name="choice">Choose a number to call.</string>
     <string name="empty_text">The tweet is empty!</string>
     <string-array name="share_menu">
         <item >Call</item>
