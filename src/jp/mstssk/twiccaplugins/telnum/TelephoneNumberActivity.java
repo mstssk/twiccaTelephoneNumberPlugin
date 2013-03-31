@@ -36,8 +36,8 @@ public class TelephoneNumberActivity extends ListActivity {
 			finish();
 		}
 
-		String text = intent.getStringExtra(Intent.EXTRA_TEXT);
-		List<TelephoneNumber> list = TelephoneNumberExtractUtil.extract(text);
+		List<TelephoneNumber> list = TelephoneNumberExtractUtil.extract(intent.getStringExtra("user_name"));
+		list.addAll(TelephoneNumberExtractUtil.extract(intent.getStringExtra(Intent.EXTRA_TEXT)));
 		if (list.isEmpty()) {
 			Toast.makeText(this, android.R.string.emptyPhoneNumber,
 					Toast.LENGTH_SHORT).show();
