@@ -90,10 +90,10 @@ public class TelephoneNumberActivity extends ListActivity {
 	private void callPriviledged(final TelephoneNumber number) {
 		try {
 			final Intent intent = IntentUtil
-					.createPriviledgedCallIntent(number);
+					.createCallActionViewIntent(number);
 			startActivity(intent);
 		} catch (ActivityNotFoundException e) {
-			// ACTION_CALL_PRIVILEGED に非対応の場合は普通のACTION_DIAL
+			// もしエラーの場合は普通のACTION_DIAL
 			Intent intent = IntentUtil.createDialIntent(number);
 			startActivity(intent);
 		}

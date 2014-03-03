@@ -11,21 +11,16 @@ import android.provider.Contacts;
  */
 public class IntentUtil {
 
-	/** Intent.ACTION_CALL_PRIVILEGED の代替 */
-	private static final String INTENT_ACTION_CALL_PRIVILEGED = "android.intent.action.CALL_PRIVILEGED";
-
 	/**
 	 * 通話Intent<br>
-	 * Skypeなどにも引っかかる。<br>
-	 * API Level 7 未満では動かない筈…
+	 * Skypeなどにも引っかかる。
 	 * 
 	 * @param number
 	 */
-	public static Intent createPriviledgedCallIntent(
+	public static Intent createCallActionViewIntent(
 			final TelephoneNumber number) {
 		Uri phoneNumberUri = createTelephoneNumberUri(number);
-		Intent intent = new Intent(INTENT_ACTION_CALL_PRIVILEGED,
-				phoneNumberUri);
+		Intent intent = new Intent(Intent.ACTION_VIEW, phoneNumberUri);
 		return intent;
 	}
 
